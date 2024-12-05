@@ -4,4 +4,9 @@ import br.com.vendas_api.model.Livro;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface LivroRepository extends JpaRepository<Livro, Long> {
+
+    Livro findByAutor(String autor);
+
+    Livro findByNome(String nome);
+
 }
