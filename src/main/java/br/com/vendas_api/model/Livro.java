@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.IdGeneratorType;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -16,6 +17,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@SQLRestriction("ativo = true")
 public class Livro {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,5 +50,8 @@ public class Livro {
     @Column(name = "criado_em")
     @CreationTimestamp
     private LocalDateTime criadoEm;
+
+    @Column(nullable = false)
+    private boolean ativo;
 
 }

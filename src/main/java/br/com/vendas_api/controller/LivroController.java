@@ -32,10 +32,39 @@ public class LivroController {
         return new ResponseEntity<>(livro, HttpStatus.OK);
     }
 
+    @GetMapping("procurar-nome")
+    public ResponseEntity<List<LivroDto>> getLivroByNomeFiltro(@RequestParam String nome){
+        List<LivroDto> retorno = livroService.getLivrosByNomeContaining(nome);
+
+        return new ResponseEntity<>(retorno, HttpStatus.OK);
+    }
+
+    @GetMapping("procurar-nome&autor")
+    public ResponseEntity<List<LivroDto>> getLivroByNomeFiltro(@RequestParam String nome, @RequestParam String autor){
+        List<LivroDto> retorno = livroService.getLivrosByNomeEAutorContaining(nome, autor);
+
+        return new ResponseEntity<>(retorno, HttpStatus.OK);
+    }
+
     @PostMapping
-    public ResponseEntity<String> postLivro(@RequestBody Livro livro){
+    public ResponseEntity<String> postLivro(@RequestBody LivroDto livro){
         String response = livroService.saveLivro(livro);
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
+
+    @PutMapping("{id}")
+    public ResponseEntity<String> putLivro(@PathVariable Long id, @RequestBody LivroDto livro){
+        String response = livroService.updateLivro(id, livro);
+
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<String> deleteLivro(@PathVariable Long id){
+        String response = livroService.deleteLivro(id);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
 }

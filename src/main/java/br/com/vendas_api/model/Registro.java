@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.time.LocalDate;
 
@@ -12,6 +13,7 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@SQLRestriction("ativo = true")
 public class Registro {
 
     @Id
@@ -35,4 +37,7 @@ public class Registro {
 
     @Column
     private Integer multa;
+
+    @Column
+    private boolean ativo;
 }

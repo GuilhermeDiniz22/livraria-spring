@@ -25,4 +25,22 @@ public class Mapper {
         return livroDto;
 
     }
+
+    public Livro convertToLivro(LivroDto livro){
+        Livro livroNovo = new Livro();
+
+        livroNovo.setId((livro.getId()));
+        livroNovo.setNome(livro.getNome());
+        livroNovo.setPreco(livro.getPreco());
+        livroNovo.setImagem(livro.getImagem());
+        livroNovo.setEditora(livro.getEditora());
+        livroNovo.setDescricao(livro.getDescricao());
+        livroNovo.setAutor(livro.getAutor());
+        livroNovo.setCopiasDisponiveis(livro.getCopiasDisponiveis());
+        livroNovo.setCategoria(livro.getCategoria());
+        livroNovo.setAtivo(Boolean.TRUE);
+
+        return livroNovo;
+
+    }
 }

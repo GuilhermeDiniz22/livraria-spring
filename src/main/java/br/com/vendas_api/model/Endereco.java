@@ -4,12 +4,14 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @Table(name = "endereco")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@SQLRestriction("ativo = true")
 public class Endereco {
 
     @Id
@@ -28,5 +30,9 @@ public class Endereco {
     @Column(nullable = false)
     private String bairro;
 
+    @Column(nullable = false)
     private String complemento;
+
+    @Column(nullable = false)
+    private boolean ativo;
 }
