@@ -42,14 +42,14 @@ public class LivroService {
             throw new LivroNaoEncontradoException("Nenhum livro encontrado!");
         }
 
-        List<LivroDto> livrosRetorno = livros.stream().map(l -> mapper.convertToLivroDto(l))
+        List<LivroDto> livrosRetorno = livros.stream().map(mapper::convertToLivroDto)
                 .toList();
 
         return livrosRetorno;
     }
 
     public List<LivroDto> getLivrosByNomeEAutorContaining(String nome, String autor){
-        List<Livro> livros = livroRepository.findByNomeAndAutorIgnoreCaseContaining(nome, autor);
+        List<Livro> livros = livroRepository.findByNomeContainingIgnoreCaseAndAutorContainingIgnoreCase(nome, autor);
 
         if (livros.isEmpty()) {
             log.warn("Nenhum livro encontrado com o nome: {}", nome);
@@ -79,6 +79,23 @@ public class LivroService {
 
         return retorno;
 
+    }
+
+    @Transactional
+    public String alugarLivro(Long id){
+        log.info("Buscando livro com id {}", id);
+
+        Livro livro = livroRepository.findById(id).orElseThrow(()->
+                new NoSuchElementException(String.format("Livro com id: %d não encontrado.", id)));
+
+        if(livro.getCopiasDisponiveis() == 0){
+            livro.setAtivo(Boolean.FALSE);
+        }else{
+            livro.setCopiasDisponiveis(livro.getCopiasDisponiveis() - 1);
+        }
+
+        return String.format("Livro '%s' alugado com sucesso! Cópias restantes: %d",
+                livro.getNome(), livro.getCopiasDisponiveis());
     }
 
     @Transactional
@@ -121,9 +138,13 @@ public class LivroService {
         Livro livro = livroRepository.findById(id).orElseThrow(
                 () -> new NoSuchElementException(String.format("Livro com id: %d não encontrado.", id)));
 
+        if(!livro.isAtivo()){
+            return String.format("Livro com nome '%s' já está deletado!", livro.getNome());
+        }
+
         livro.setAtivo(Boolean.FALSE);
 
-        return "Livro deletado com sucesso!";
+        return String.format("Livro com nome '%s' deletado com sucesso!", livro.getNome());
 
     }
 

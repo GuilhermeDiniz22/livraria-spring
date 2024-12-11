@@ -40,10 +40,17 @@ public class LivroController {
     }
 
     @GetMapping("procurar-nome&autor")
-    public ResponseEntity<List<LivroDto>> getLivroByNomeFiltro(@RequestParam String nome, @RequestParam String autor){
+    public ResponseEntity<List<LivroDto>> getLivroByNomeAutor(@RequestParam String nome, @RequestParam String autor){
         List<LivroDto> retorno = livroService.getLivrosByNomeEAutorContaining(nome, autor);
 
         return new ResponseEntity<>(retorno, HttpStatus.OK);
+    }
+
+    @GetMapping("{id}/alugar")
+    public ResponseEntity<String> alugarLivro(@PathVariable Long id){
+        String response = livroService.alugarLivro(id);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping

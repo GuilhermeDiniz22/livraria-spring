@@ -9,9 +9,8 @@ import java.util.List;
 
 public interface LivroRepository extends JpaRepository<Livro, Long> {
 
+    List<Livro> findByNomeIgnoreCaseContaining( String nome);
 
-    @Query("SELECT l FROM Livro l WHERE LOWER(l.nome) LIKE LOWER(CONCAT('%', :nome, '%'))")
-    List<Livro> findByNomeIgnoreCaseContaining(@Param("nome") String nome);
+    List<Livro> findByNomeContainingIgnoreCaseAndAutorContainingIgnoreCase(String nome, String autor);
 
-    List<Livro> findByNomeAndAutorIgnoreCaseContaining(String nome, String autor);
 }

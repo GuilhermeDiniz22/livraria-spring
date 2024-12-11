@@ -1,6 +1,8 @@
 package br.com.vendas_api.mapper;
 
+import br.com.vendas_api.dto.EnderecoDto;
 import br.com.vendas_api.dto.LivroDto;
+import br.com.vendas_api.model.Endereco;
 import br.com.vendas_api.model.Livro;
 import lombok.Data;
 import org.springframework.stereotype.Component;
@@ -43,4 +45,30 @@ public class Mapper {
         return livroNovo;
 
     }
+
+    public Endereco convertToEndereco(EnderecoDto parametro) {
+        Endereco endereco = new Endereco();
+        endereco.setId(parametro.getId());
+        endereco.setRua(parametro.getRua());
+        endereco.setNumero(parametro.getNumero());
+        endereco.setCep(parametro.getCep());
+        endereco.setBairro(parametro.getBairro());
+        endereco.setComplemento(parametro.getComplemento());
+        endereco.setAtivo(Boolean.TRUE);
+
+        return endereco;
+    }
+
+    public EnderecoDto convertToEnderecoDto(Endereco parametro) {
+        EnderecoDto endereco = new EnderecoDto();
+        endereco.setId(parametro.getId());
+        endereco.setRua(parametro.getRua());
+        endereco.setNumero(parametro.getNumero());
+        endereco.setCep(parametro.getCep());
+        endereco.setBairro(parametro.getBairro());
+        endereco.setComplemento(parametro.getComplemento());
+
+        return endereco;
+    }
+
 }
