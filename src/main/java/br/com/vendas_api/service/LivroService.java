@@ -25,6 +25,8 @@ public class LivroService {
     private Mapper mapper;
 
     public LivroDto getLivroById(Long id){
+        log.info(String.format("Buscando livro com id: '%d", id));
+
         Livro livro = livroRepository.findById(id).orElseThrow(()->
                 new NoSuchElementException(String.format("Livro com id: %d não encontrado.", id)));
 
@@ -95,6 +97,23 @@ public class LivroService {
         }
 
         return String.format("Livro '%s' alugado com sucesso! Cópias restantes: %d",
+                livro.getNome(), livro.getCopiasDisponiveis());
+    }
+
+    @Transactional
+    public String devolverLivro(Long id){
+        log.info("Buscando livro com id {}", id);
+
+        Livro livro = livroRepository.findById(id).orElseThrow(()->
+                new LivroNaoEncontradoException(String.format("Livro com id: %d não encontrado.", id)));
+
+        if(livro.getCopiasDisponiveis() == 0){
+            livro.setAtivo(Boolean.TRUE);
+        }else{
+            livro.setCopiasDisponiveis(livro.getCopiasDisponiveis() + 1);
+        }
+
+        return String.format("Livro '%s' delvovido com sucesso! Cópias restantes: %d",
                 livro.getNome(), livro.getCopiasDisponiveis());
     }
 

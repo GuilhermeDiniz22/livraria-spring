@@ -38,7 +38,7 @@ public class Socio {
     @Email
     private String email;
 
-    @Column(name = "data_admissao")
+    @Column(name = "data_admissao", nullable = false)
     private LocalDate dataDeAdmissao;
 
     @Column(name = "data_termino")

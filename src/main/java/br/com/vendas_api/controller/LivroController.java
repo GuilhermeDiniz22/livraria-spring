@@ -53,6 +53,13 @@ public class LivroController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @GetMapping("{id}/devolver")
+    public ResponseEntity<String> devolverLivro(@PathVariable Long id){
+        String response = livroService.devolverLivro(id);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<String> postLivro(@RequestBody LivroDto livro){
         String response = livroService.saveLivro(livro);

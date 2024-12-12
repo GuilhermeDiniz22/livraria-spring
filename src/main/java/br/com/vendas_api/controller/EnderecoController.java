@@ -23,6 +23,13 @@ public class EnderecoController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
+    @PutMapping("{id}")
+    public ResponseEntity<String> atualizarEndereco(@PathVariable Long id, @RequestBody EnderecoDto enderecoDto){
+        String response = enderecoService.putEndereco(id, enderecoDto);
+
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
     @GetMapping
     public ResponseEntity<List<EnderecoDto>> pegarEnderecos(){
         List<EnderecoDto> response = enderecoService.getEnderecos();
@@ -33,6 +40,13 @@ public class EnderecoController {
     @GetMapping("{id}")
     public ResponseEntity<EnderecoDto> pegarEnderecoPorID(@PathVariable Long id){
         EnderecoDto response = enderecoService.getEnderecoById(id);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<String> deletarEndereco(@PathVariable Long id){
+        String response = enderecoService.deleteEndereco(id);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
