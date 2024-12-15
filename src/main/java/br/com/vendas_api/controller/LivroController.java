@@ -46,16 +46,16 @@ public class LivroController {
         return new ResponseEntity<>(retorno, HttpStatus.OK);
     }
 
-    @GetMapping("{id}/alugar")
-    public ResponseEntity<String> alugarLivro(@PathVariable Long id){
-        String response = livroService.alugarLivro(id);
+    @GetMapping("{socioId}/alugar/{livroId}")
+    public ResponseEntity<String> alugarLivro(@PathVariable Long socioId, @PathVariable Long livroId){
+        String response = livroService.alugarLivro(socioId, livroId);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("{id}/devolver")
-    public ResponseEntity<String> devolverLivro(@PathVariable Long id){
-        String response = livroService.devolverLivro(id);
+    @GetMapping("{socioId}/devolver/{livroId}")
+    public ResponseEntity<String> devolverLivro(@PathVariable Long socioId, @PathVariable Long livroId){
+        String response = livroService.devolverLivro(socioId, livroId);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

@@ -34,6 +34,10 @@ public class Socio {
     @JoinColumn(name = "endereco_id")
     private Endereco endereco;
 
+    @ManyToOne
+    @JoinColumn(name = "livro_id", nullable = true)
+    private Livro livro;
+
     @Column
     @Email
     private String email;

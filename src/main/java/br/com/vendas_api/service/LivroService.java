@@ -2,14 +2,20 @@ package br.com.vendas_api.service;
 
 import br.com.vendas_api.dto.LivroDto;
 import br.com.vendas_api.exception.LivroNaoEncontradoException;
+import br.com.vendas_api.exception.SocioNaoEncontradoException;
 import br.com.vendas_api.mapper.Mapper;
 import br.com.vendas_api.model.Livro;
+import br.com.vendas_api.model.Registro;
+import br.com.vendas_api.model.Socio;
 import br.com.vendas_api.repository.LivroRepository;
+import br.com.vendas_api.repository.RegistroRepository;
+import br.com.vendas_api.repository.SocioRepository;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -20,6 +26,12 @@ public class LivroService {
 
     @Autowired
     private LivroRepository livroRepository;
+
+    @Autowired
+    private SocioRepository socioRepository;
+
+    @Autowired
+    private RegistroRepository registroRepository;
 
     @Autowired
     private Mapper mapper;
@@ -84,36 +96,67 @@ public class LivroService {
     }
 
     @Transactional
-    public String alugarLivro(Long id){
-        log.info("Buscando livro com id {}", id);
+    public String alugarLivro(Long socioId, Long livroId){
+        log.info("Buscando livro com id {}", livroId);
 
-        Livro livro = livroRepository.findById(id).orElseThrow(()->
-                new NoSuchElementException(String.format("Livro com id: %d não encontrado.", id)));
+        Livro livro = livroRepository.findById(livroId).orElseThrow(()->
+                new NoSuchElementException(String.format("Livro com id: %d não encontrado.", livroId)));
+
+        Socio socio = socioRepository.findById(socioId)
+                .orElseThrow(()->
+                        new NoSuchElementException(String.format("Socio com id: %d não encontrado.", socioId)));
+
+        socio.setLivro(livro);
 
         if(livro.getCopiasDisponiveis() == 0){
             livro.setAtivo(Boolean.FALSE);
+
+            return "Livro não disponível!";
+
         }else{
             livro.setCopiasDisponiveis(livro.getCopiasDisponiveis() - 1);
+
+            socioRepository.save(socio);
         }
 
-        return String.format("Livro '%s' alugado com sucesso! Cópias restantes: %d",
-                livro.getNome(), livro.getCopiasDisponiveis());
+        Registro registro = new Registro();
+        registro.setDataAluguel(LocalDate.now());
+        registro.setSocio(socio);
+        registro.setLivro(livro);
+        registro.setAtivo(Boolean.TRUE);
+
+        Registro novo = registroRepository.save(registro);
+
+        return String.format("Livro '%s' alugado com sucesso! Cópias restantes: %d e Registro criado com sucesso com id: %d",
+                livro.getNome(), livro.getCopiasDisponiveis(), novo.getId());
     }
-
     @Transactional
-    public String devolverLivro(Long id){
-        log.info("Buscando livro com id {}", id);
+    public String devolverLivro(Long socioId, Long livroId) {
+        log.info("Buscando livro com id {}", livroId);
 
-        Livro livro = livroRepository.findById(id).orElseThrow(()->
-                new LivroNaoEncontradoException(String.format("Livro com id: %d não encontrado.", id)));
+        Livro livro = livroRepository.findById(livroId).orElseThrow(() ->
+                new LivroNaoEncontradoException(String.format("Livro com id: %d não encontrado.", livroId)));
 
-        if(livro.getCopiasDisponiveis() == 0){
-            livro.setAtivo(Boolean.TRUE);
-        }else{
-            livro.setCopiasDisponiveis(livro.getCopiasDisponiveis() + 1);
+
+        Socio socio = socioRepository.findById(socioId).orElseThrow(() ->
+                new NoSuchElementException(String.format("Socio com id: %d não encontrado.", socioId)));
+
+        if (socio.getLivro() == null || !socio.getLivro().getId().equals(livroId)) {
+            throw new IllegalArgumentException(String.format("O sócio de id: %d não alugou o livro com id: %d.", socioId, livroId));
         }
 
-        return String.format("Livro '%s' delvovido com sucesso! Cópias restantes: %d",
+        socio.setLivro(null);
+
+        livro.setCopiasDisponiveis(livro.getCopiasDisponiveis() + 1);
+
+        if (!livro.isAtivo() && livro.getCopiasDisponiveis() > 0) {
+            livro.setAtivo(Boolean.TRUE);
+        }
+
+        livroRepository.save(livro);
+        socioRepository.save(socio);
+
+        return String.format("Livro '%s' devolvido com sucesso! Cópias restantes: %d",
                 livro.getNome(), livro.getCopiasDisponiveis());
     }
 
@@ -166,7 +209,6 @@ public class LivroService {
         return String.format("Livro com nome '%s' deletado com sucesso!", livro.getNome());
 
     }
-
 
 
 

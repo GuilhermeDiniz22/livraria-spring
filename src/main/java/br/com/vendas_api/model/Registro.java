@@ -20,7 +20,6 @@ public class Registro {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     @ManyToOne
     @JoinColumn(name = "socio_id", nullable = false)
     private Socio socio;
@@ -38,6 +37,7 @@ public class Registro {
     @Column
     private Integer multa;
 
-    @Column
+    @Column(nullable = false)
     private boolean ativo;
+
 }

@@ -1,15 +1,14 @@
 package br.com.vendas_api.mapper;
 
-import br.com.vendas_api.dto.EnderecoDto;
-import br.com.vendas_api.dto.LivroDto;
-import br.com.vendas_api.dto.SocioDtoEntrada;
-import br.com.vendas_api.dto.SocioDtoSaida;
+import br.com.vendas_api.dto.*;
 import br.com.vendas_api.model.Endereco;
 import br.com.vendas_api.model.Livro;
+import br.com.vendas_api.model.Registro;
 import br.com.vendas_api.model.Socio;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Data
@@ -98,8 +97,25 @@ public class Mapper {
         saida.setSobrenome(socio.getSobrenome());
         saida.setDataNascimento(socio.getDataNascimento());
         saida.setDataDeAdmissao(socio.getDataDeAdmissao());
-        saida.setEndereco(socio.getEndereco());
+        saida.setEndereco(convertToEnderecoDto(socio.getEndereco()));
+        saida.setLivro(socio.getLivro() != null ? convertToLivroDto(socio.getLivro()) : getLivroVazio());
 
         return saida;
+    }
+
+    private LivroDto getLivroVazio() {
+        return new LivroDto();
+    }
+
+    public RegistroDto converToRegistroDto(Registro registro){
+        RegistroDto retorno = new RegistroDto();
+        retorno.setSocio(registro.getSocio());
+        retorno.setId(registro.getId());
+        retorno.setLivro(registro.getLivro());
+        retorno.setDataAluguel(registro.getDataAluguel());
+        retorno.setMulta(registro.getMulta());
+        retorno.setDataEntrega(registro.getDataEntrega());
+
+        return retorno;
     }
 }
