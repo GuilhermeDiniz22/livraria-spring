@@ -20,6 +20,9 @@ public class Registro {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
+    private String nomeLivro;
+
     @ManyToOne
     @JoinColumn(name = "socio_id", nullable = false)
     private Socio socio;

@@ -2,6 +2,7 @@ package br.com.vendas_api.service;
 
 import br.com.vendas_api.dto.LivroDto;
 import br.com.vendas_api.exception.LivroNaoEncontradoException;
+import br.com.vendas_api.exception.RegistroNaoEncontradoException;
 import br.com.vendas_api.exception.SocioNaoEncontradoException;
 import br.com.vendas_api.mapper.Mapper;
 import br.com.vendas_api.model.Livro;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -122,6 +124,7 @@ public class LivroService {
         Registro registro = new Registro();
         registro.setDataAluguel(LocalDate.now());
         registro.setSocio(socio);
+        registro.setNomeLivro(livro.getNome());
         registro.setLivro(livro);
         registro.setAtivo(Boolean.TRUE);
 
@@ -130,6 +133,7 @@ public class LivroService {
         return String.format("Livro '%s' alugado com sucesso! Cópias restantes: %d e Registro criado com sucesso com id: %d",
                 livro.getNome(), livro.getCopiasDisponiveis(), novo.getId());
     }
+
     @Transactional
     public String devolverLivro(Long socioId, Long livroId) {
         log.info("Buscando livro com id {}", livroId);
@@ -141,20 +145,40 @@ public class LivroService {
         Socio socio = socioRepository.findById(socioId).orElseThrow(() ->
                 new NoSuchElementException(String.format("Socio com id: %d não encontrado.", socioId)));
 
-        if (socio.getLivro() == null || !socio.getLivro().getId().equals(livroId)) {
-            throw new IllegalArgumentException(String.format("O sócio de id: %d não alugou o livro com id: %d.", socioId, livroId));
+        Registro registro = registroRepository.findBySocioId(socio.getId());
+
+        if (registro == null || !registro.isAtivo()) {
+            throw new RegistroNaoEncontradoException(String.format("Nenhum registro ativo encontrado para o sócio com ID %d.", socioId));
         }
+
+        registro.setDataEntrega(LocalDate.now());
+
+        long diferencaEmDias = ChronoUnit.DAYS.between(registro.getDataAluguel(), registro.getDataEntrega());
+
+        if (diferencaEmDias > 20) {
+            int multaPorDia = 2; // Exemplo: R$2 por dia de atraso
+            int diasAtraso = (int) (diferencaEmDias - 20);
+            registro.setMulta(diasAtraso * multaPorDia);
+        } else {
+            registro.setMulta(0); // Sem multa
+        }
+
+
+        if (socio.getLivro() == null || !socio.getLivro().getId().equals(livroId))
+            throw new IllegalArgumentException(String.format("O sócio de id: %d não alugou o livro com id: %d.", socioId, livroId));
+
 
         socio.setLivro(null);
 
         livro.setCopiasDisponiveis(livro.getCopiasDisponiveis() + 1);
 
-        if (!livro.isAtivo() && livro.getCopiasDisponiveis() > 0) {
+        if (!livro.isAtivo() && livro.getCopiasDisponiveis() > 0)
             livro.setAtivo(Boolean.TRUE);
-        }
+
 
         livroRepository.save(livro);
         socioRepository.save(socio);
+        registroRepository.save(registro);
 
         return String.format("Livro '%s' devolvido com sucesso! Cópias restantes: %d",
                 livro.getNome(), livro.getCopiasDisponiveis());

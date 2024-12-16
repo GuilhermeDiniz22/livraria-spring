@@ -8,7 +8,6 @@ import br.com.vendas_api.model.Socio;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Data
@@ -107,11 +106,11 @@ public class Mapper {
         return new LivroDto();
     }
 
-    public RegistroDto converToRegistroDto(Registro registro){
-        RegistroDto retorno = new RegistroDto();
-        retorno.setSocio(registro.getSocio());
+    public RegistroDtoSaida converToRegistroDtoSaida(Registro registro){
+        RegistroDtoSaida retorno = new RegistroDtoSaida();
+        retorno.setSocio(convertToSocioDtoSaida(registro.getSocio()));
         retorno.setId(registro.getId());
-        retorno.setLivro(registro.getLivro());
+        retorno.setNomeLivro(registro.getNomeLivro());
         retorno.setDataAluguel(registro.getDataAluguel());
         retorno.setMulta(registro.getMulta());
         retorno.setDataEntrega(registro.getDataEntrega());
