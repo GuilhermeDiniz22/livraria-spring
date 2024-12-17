@@ -42,7 +42,7 @@ public class LivroService {
         log.info(String.format("Buscando livro com id: '%d", id));
 
         Livro livro = livroRepository.findById(id).orElseThrow(()->
-                new NoSuchElementException(String.format("Livro com id: %d não encontrado.", id)));
+                new LivroNaoEncontradoException("Livro com id: " + id + " não encontrado."));
 
         LivroDto retorno = mapper.convertToLivroDto(livro);
 
@@ -102,7 +102,7 @@ public class LivroService {
         log.info("Buscando livro com id {}", livroId);
 
         Livro livro = livroRepository.findById(livroId).orElseThrow(()->
-                new NoSuchElementException(String.format("Livro com id: %d não encontrado.", livroId)));
+                new LivroNaoEncontradoException(String.format("Livro com id: %d não encontrado.", livroId)));
 
         Socio socio = socioRepository.findById(socioId)
                 .orElseThrow(()->
@@ -189,7 +189,7 @@ public class LivroService {
         log.info("Buscando livro com id {}", id);
 
         Livro livro = livroRepository.findById(id).orElseThrow(
-                () -> new NoSuchElementException(String.format("Livro com id: %d não encontrado.", id)));
+                () -> new LivroNaoEncontradoException(String.format("Livro com id: %d não encontrado.", id)));
 
 
         livro.setAutor(livroAtualizado.getAutor());
@@ -222,7 +222,7 @@ public class LivroService {
         log.info("Buscando livro com id {}", id);
 
         Livro livro = livroRepository.findById(id).orElseThrow(
-                () -> new NoSuchElementException(String.format("Livro com id: %d não encontrado.", id)));
+                () -> new LivroNaoEncontradoException(String.format("Livro com id: %d não encontrado.", id)));
 
         if(!livro.isAtivo()){
             return String.format("Livro com nome '%s' já está deletado!", livro.getNome());

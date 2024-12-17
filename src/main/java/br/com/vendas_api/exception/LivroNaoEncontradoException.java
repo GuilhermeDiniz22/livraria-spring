@@ -1,18 +1,18 @@
 package br.com.vendas_api.exception;
 
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+@ResponseStatus(value = HttpStatus.NOT_FOUND)
 public class LivroNaoEncontradoException extends RuntimeException{
 
     private String mensagem;
 
-    private String nome;
-
-    public LivroNaoEncontradoException(String mensagem, String nome) {
-        this.mensagem = mensagem;
-        this.nome = nome;
-    }
 
     public LivroNaoEncontradoException(String mensagem) {
+        super(mensagem);
         this.mensagem = mensagem;
     }
+
 }

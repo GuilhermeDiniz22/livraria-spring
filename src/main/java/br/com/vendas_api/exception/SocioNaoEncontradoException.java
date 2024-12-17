@@ -1,17 +1,17 @@
 package br.com.vendas_api.exception;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+@ResponseStatus(value = HttpStatus.NOT_FOUND)
 public class SocioNaoEncontradoException extends RuntimeException{
+
 
     private String mensagem;
 
-    private Long id;
-
-    public SocioNaoEncontradoException(String mensagem, Long id) {
-        this.mensagem = mensagem;
-        this.id = id;
-    }
 
     public SocioNaoEncontradoException(String mensagem) {
+        super(mensagem);
         this.mensagem = mensagem;
     }
 }
