@@ -46,7 +46,7 @@ public class EnderecoService {
         log.info("Buscando endereço com id: '{}'", id);
 
         Endereco endereco = enderecoRepository.findById(id).orElseThrow(
-                () -> new EnderecoNaoEncontradoException("Endereco com id: '%d' não encontrado!", id));
+                () -> new EnderecoNaoEncontradoException("Endereco com id: " +  id + " não encontrado!"));
 
         return mapper.convertToEnderecoDto(endereco);
     }
@@ -56,7 +56,7 @@ public class EnderecoService {
         log.info("Buscando endereço com id: '{}'", id);
 
         Endereco endereco = enderecoRepository.findById(id).orElseThrow(
-                () -> new EnderecoNaoEncontradoException("Endereco com id: '%d' não encontrado!", id));
+                () -> new EnderecoNaoEncontradoException("Endereco com id: " +  id + " não encontrado!"));
 
         endereco.setBairro(enderecoDto.getBairro());
         endereco.setCep(enderecoDto.getCep());
@@ -76,7 +76,7 @@ public class EnderecoService {
         log.info("Buscando endereço com id: '{}'", id);
 
         Endereco endereco = enderecoRepository.findById(id).orElseThrow(
-                () -> new EnderecoNaoEncontradoException("Endereco com id: '%d' não encontrado!", id));
+                () -> new EnderecoNaoEncontradoException("Endereco com id: " +  id + " não encontrado!"));
 
         endereco.setAtivo(Boolean.FALSE);
 
