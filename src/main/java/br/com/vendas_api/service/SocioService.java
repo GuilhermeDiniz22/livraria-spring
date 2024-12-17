@@ -56,6 +56,16 @@ public class SocioService {
 
         socio.setAtivo(Boolean.FALSE);
 
+
+        Endereco endereco = enderecoRepository.findEnderecoBySocioId(socio.getId());
+
+        if(endereco.getId() == null)
+            throw new EnderecoNaoEncontradoException("Endereço não localizado com id: " + id);
+
+        endereco.setAtivo(Boolean.FALSE);
+
+        enderecoRepository.save(endereco);
+
         return String.format("Sócio com id: %d deletado com sucesso!", id);
     }
 

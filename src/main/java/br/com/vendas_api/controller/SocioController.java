@@ -32,7 +32,7 @@ public class SocioController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<String> deletarSocio(@PathVariable Long id){
+    public ResponseEntity<String> desativarSocio(@PathVariable Long id){
         String response =  socioService.deleteSocioById(id);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
