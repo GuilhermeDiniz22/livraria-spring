@@ -13,6 +13,7 @@ public class EnderecoNaoEncontradoException extends RuntimeException{
 
     private String mensagem;
 
+
     public EnderecoNaoEncontradoException(String mensagem) {
         this.mensagem = mensagem;
     }

@@ -35,9 +35,11 @@ public class SocioService {
     private Mapper mapper;
 
     @Transactional
-    public String postSocio(SocioDtoEntrada socioDtoEntrada){
+    public String postSocio(SocioDtoEntrada socioDtoEntrada) {
         Endereco endereco = enderecoRepository.findById(socioDtoEntrada.getEnderecoId()).orElseThrow(
-                () -> new EnderecoNaoEncontradoException("Endereco com id: '%d' não encontrado!", socioDtoEntrada.getEnderecoId()));
+                () -> new EnderecoNaoEncontradoException("Endereco com id: "
+                        + socioDtoEntrada.getEnderecoId() + " não encontrado!")
+        );
 
         Socio socio = mapper.convertToSocio(socioDtoEntrada);
         socio.setEndereco(endereco);
@@ -45,12 +47,12 @@ public class SocioService {
         socioRepository.save(socio);
 
         return "Sócio salvo com sucesso!";
-
     }
+
 
     public String deleteSocioById(Long id){
         Socio socio = socioRepository.findById(id)
-                .orElseThrow(()-> new SocioNaoEncontradoException("Sócio não encontrado com id: %d", id));
+                .orElseThrow(()-> new SocioNaoEncontradoException("Sócio não encontrado com id: " + id));
 
         socio.setAtivo(Boolean.FALSE);
 
@@ -59,7 +61,7 @@ public class SocioService {
 
     public SocioDtoSaida getSocioById(Long id){
         Socio socio = socioRepository.findById(id)
-                .orElseThrow(()-> new SocioNaoEncontradoException("Sócio não encontrado com id: %d", id));
+                .orElseThrow(()-> new SocioNaoEncontradoException("Sócio não encontrado com id: " + id));
 
         return mapper.convertToSocioDtoSaida(socio);
     }
@@ -108,7 +110,7 @@ public class SocioService {
 
     public String updateSocio(Long id, SocioDtoEntrada socioDtoEntrada){
         Socio socio = socioRepository.findById(id)
-                .orElseThrow(()-> new SocioNaoEncontradoException("Sócio não encontrado com id: %d", id));
+                .orElseThrow(()-> new SocioNaoEncontradoException("Sócio não encontrado com id: " + id));
 
         Endereco endereco = enderecoRepository.findById(socioDtoEntrada.getEnderecoId())
                 .orElseThrow(() -> new EnderecoNaoEncontradoException(
