@@ -3,6 +3,7 @@ package br.com.vendas_api.controller;
 import br.com.vendas_api.dto.SocioDtoEntrada;
 import br.com.vendas_api.dto.SocioDtoSaida;
 import br.com.vendas_api.service.SocioService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,14 +19,14 @@ public class SocioController {
     private SocioService socioService;
 
     @PostMapping
-    public ResponseEntity<String> novoSocio(@RequestBody  SocioDtoEntrada socioDtoEntrada){
+    public ResponseEntity<String> novoSocio(@Valid @RequestBody  SocioDtoEntrada socioDtoEntrada){
         String response =  socioService.postSocio(socioDtoEntrada);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<String> atualizarSocio(@PathVariable Long id, @RequestBody  SocioDtoEntrada socioDtoEntrada){
+    public ResponseEntity<String> atualizarSocio(@PathVariable Long id, @Valid @RequestBody  SocioDtoEntrada socioDtoEntrada){
         String response =  socioService.updateSocio(id, socioDtoEntrada);
 
         return new ResponseEntity<>(response, HttpStatus.OK);

@@ -2,6 +2,7 @@ package br.com.vendas_api.controller;
 
 import br.com.vendas_api.dto.EnderecoDto;
 import br.com.vendas_api.service.EnderecoService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,14 +18,14 @@ public class EnderecoController {
     private EnderecoService enderecoService;
 
     @PostMapping
-    public ResponseEntity<String> adicionarEndereco(@RequestBody EnderecoDto enderecoDto){
+    public ResponseEntity<String> adicionarEndereco(@Valid @RequestBody EnderecoDto enderecoDto){
         String response = enderecoService.postEndereco(enderecoDto);
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<String> atualizarEndereco(@PathVariable Long id, @RequestBody EnderecoDto enderecoDto){
+    public ResponseEntity<String> atualizarEndereco(@PathVariable Long id, @Valid @RequestBody EnderecoDto enderecoDto){
         String response = enderecoService.putEndereco(id, enderecoDto);
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);

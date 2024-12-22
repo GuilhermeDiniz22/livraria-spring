@@ -3,6 +3,7 @@ package br.com.vendas_api.controller;
 import br.com.vendas_api.dto.LivroDto;
 import br.com.vendas_api.model.Livro;
 import br.com.vendas_api.service.LivroService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -61,14 +62,14 @@ public class LivroController {
     }
 
     @PostMapping
-    public ResponseEntity<String> postLivro(@RequestBody LivroDto livro){
+    public ResponseEntity<String> postLivro(@Valid @RequestBody LivroDto livro){
         String response = livroService.saveLivro(livro);
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<String> putLivro(@PathVariable Long id, @RequestBody LivroDto livro){
+    public ResponseEntity<String> putLivro(@PathVariable Long id, @Valid @RequestBody LivroDto livro){
         String response = livroService.updateLivro(id, livro);
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);

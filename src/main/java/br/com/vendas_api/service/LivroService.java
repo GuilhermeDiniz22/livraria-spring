@@ -108,6 +108,8 @@ public class LivroService {
                 .orElseThrow(()->
                         new NoSuchElementException(String.format("Socio com id: %d não encontrado.", socioId)));
 
+        if(socio.getLivro() != null) throw new IllegalArgumentException("O sócio já alugou um livro!");
+
         socio.setLivro(livro);
 
         if(livro.getCopiasDisponiveis() == 0){
