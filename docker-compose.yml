@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  vendas-api:
+    build: .
+    container_name: vendas-api
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/vendas?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      API_SECURITY_TOKEN_SECRET: my-secret-key
+    depends_on:
+      - mysql
+    networks:
+      - vendas-network
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: vendas
+    ports:
+      - "3306:3306"
+    networks:
+      - vendas-network
+
+networks:
+  vendas-network:
+    driver: bridge
