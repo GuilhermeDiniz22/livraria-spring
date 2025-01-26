@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/endereco")
-@CrossOrigin
+@CrossOrigin(origins = "http://perceptive-laughter-production.up.railway.app")
 @Tag(
         name = "API Endereço",
         description = "API responsável pelos serviços da entidade endereço no sistema."
