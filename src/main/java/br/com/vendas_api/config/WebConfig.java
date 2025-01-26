@@ -10,11 +10,10 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        // Permite CORS para todas as rotas
         registry.addMapping("/**")
-                .allowedOrigins("*")  // Permite todas as origens. Você pode restringir a URLs específicas, se necessário.
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")  // Permite os métodos HTTP que você deseja
-                .allowedHeaders("*")  // Permite todos os cabeçalhos
-                .allowCredentials(true);  // Se necessário, permite o envio de cookies
+                .allowedOriginPatterns("https://*.railway.app")  // Usando padrão para permitir todas as origens do Railway
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                .allowedHeaders("*")
+                .allowCredentials(true);
     }
 }
