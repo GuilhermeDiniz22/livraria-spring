@@ -16,7 +16,7 @@ import java.util.List;
 @RequestMapping("api/endereco")
 @Tag(
         name = "API Endereço",
-        description = "API responsável pelos serviços da entidade endereço no sistema"
+        description = "API responsável pelos serviços da entidade endereço no sistema."
 )
 public class EnderecoController {
 
@@ -25,40 +25,51 @@ public class EnderecoController {
 
     @PostMapping
     @Operation(
-            summary = "Serviço responsável por salvar um endereço no sistema.",
-            description = "O serviço recebe um enreço dto e converte em endereço antes de salvar no banco de dados."
+            summary = "Adicionar um novo endereço",
+            description = "Recebe um DTO de endereço, valida os dados e salva no banco de dados."
     )
-    public ResponseEntity<String> adicionarEndereco(@Valid @RequestBody EnderecoDto enderecoDto){
+    public ResponseEntity<String> adicionarEndereco(@Valid @RequestBody EnderecoDto enderecoDto) {
         String response = enderecoService.postEndereco(enderecoDto);
-
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<String> atualizarEndereco(@PathVariable Long id, @Valid @RequestBody EnderecoDto enderecoDto){
+    @Operation(
+            summary = "Atualizar um endereço existente",
+            description = "Atualiza os dados de um endereço identificado pelo ID fornecido."
+    )
+    public ResponseEntity<String> atualizarEndereco(@PathVariable Long id, @Valid @RequestBody EnderecoDto enderecoDto) {
         String response = enderecoService.putEndereco(id, enderecoDto);
-
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<List<EnderecoDto>> pegarEnderecos(){
+    @Operation(
+            summary = "Listar todos os endereços",
+            description = "Retorna uma lista de todos os endereços cadastrados no sistema."
+    )
+    public ResponseEntity<List<EnderecoDto>> pegarEnderecos() {
         List<EnderecoDto> response = enderecoService.getEnderecos();
-
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<EnderecoDto> pegarEnderecoPorID(@PathVariable Long id){
+    @Operation(
+            summary = "Obter detalhes de um endereço",
+            description = "Retorna os detalhes de um endereço específico identificado pelo ID."
+    )
+    public ResponseEntity<EnderecoDto> pegarEnderecoPorID(@PathVariable Long id) {
         EnderecoDto response = enderecoService.getEnderecoById(id);
-
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<String> deletarEndereco(@PathVariable Long id){
+    @Operation(
+            summary = "Excluir um endereço",
+            description = "Exclui um endereço específico identificado pelo ID fornecido."
+    )
+    public ResponseEntity<String> deletarEndereco(@PathVariable Long id) {
         String response = enderecoService.deleteEndereco(id);
-
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

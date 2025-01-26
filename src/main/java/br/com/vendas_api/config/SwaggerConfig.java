@@ -25,8 +25,8 @@ public class SwaggerConfig {
     @Bean
     public GroupedOpenApi customApi() {
         return GroupedOpenApi.builder()
-                .group("api")
-                .pathsToMatch("/api/**")
+                .group("all")
+                .pathsToMatch("/**") // Incluir todas as rotas
                 .pathsToExclude("/error", "/actuator/**")
                 .build();
     }
