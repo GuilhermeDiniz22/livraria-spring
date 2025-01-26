@@ -1,21 +1,12 @@
 package br.com.vendas_api.dto;
 
-import br.com.vendas_api.model.Livro;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.Builder;
-import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
-@Data
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class LivroDto {
 
@@ -53,4 +44,93 @@ public class LivroDto {
     @NotBlank(message = "A categoria deve ser preenchida")
     private String categoria;
 
+    // Construtor sem argumentos
+    public LivroDto() {
+    }
+
+    // Construtor com argumentos
+    public LivroDto(Long id, String nome, String autor, String editora, String descricao, Integer copiasDisponiveis, BigDecimal preco, String imagem, String categoria) {
+        this.id = id;
+        this.nome = nome;
+        this.autor = autor;
+        this.editora = editora;
+        this.descricao = descricao;
+        this.copiasDisponiveis = copiasDisponiveis;
+        this.preco = preco;
+        this.imagem = imagem;
+        this.categoria = categoria;
+    }
+
+    // Getters e Setters
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getAutor() {
+        return autor;
+    }
+
+    public void setAutor(String autor) {
+        this.autor = autor;
+    }
+
+    public String getEditora() {
+        return editora;
+    }
+
+    public void setEditora(String editora) {
+        this.editora = editora;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public Integer getCopiasDisponiveis() {
+        return copiasDisponiveis;
+    }
+
+    public void setCopiasDisponiveis(Integer copiasDisponiveis) {
+        this.copiasDisponiveis = copiasDisponiveis;
+    }
+
+    public BigDecimal getPreco() {
+        return preco;
+    }
+
+    public void setPreco(BigDecimal preco) {
+        this.preco = preco;
+    }
+
+    public String getImagem() {
+        return imagem;
+    }
+
+    public void setImagem(String imagem) {
+        this.imagem = imagem;
+    }
+
+    public String getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
+    }
 }
