@@ -7,5 +7,7 @@ para gerar o banco de dados com a tabela é necessário criar um schema no MYSQL
 com o user root e senha também root
 
 spring.datasource.url=jdbc:mysql://localhost:3306/vendas?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+
 spring.datasource.username=root
+
 spring.datasource.password=root
