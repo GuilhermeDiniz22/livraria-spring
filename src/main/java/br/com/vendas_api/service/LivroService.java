@@ -167,6 +167,7 @@ public class LivroService {
 
         registro.setAtivo(Boolean.FALSE);
 
+
         if (socio.getLivro() == null || !socio.getLivro().getId().equals(livroId))
             throw new IllegalArgumentException(String.format("O sócio de id: %d não alugou o livro com id: %d.", socioId, livroId));
 
