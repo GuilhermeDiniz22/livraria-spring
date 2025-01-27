@@ -147,7 +147,7 @@ public class LivroService {
         Socio socio = socioRepository.findById(socioId).orElseThrow(() ->
                 new NoSuchElementException(String.format("Socio com id: %d não encontrado.", socioId)));
 
-        Registro registro = registroRepository.findBySocioId(socio.getId());
+        Registro registro = registroRepository.findBySocioIdAndAtivoTrue(socio.getId());
 
         if (registro == null || !registro.isAtivo()) {
             throw new RegistroNaoEncontradoException(String.format("Nenhum registro ativo encontrado para o sócio com ID %d.", socioId));
@@ -165,6 +165,7 @@ public class LivroService {
             registro.setMulta(0); // Sem multa
         }
 
+        registro.setAtivo(Boolean.FALSE);
 
         if (socio.getLivro() == null || !socio.getLivro().getId().equals(livroId))
             throw new IllegalArgumentException(String.format("O sócio de id: %d não alugou o livro com id: %d.", socioId, livroId));
@@ -182,8 +183,7 @@ public class LivroService {
         socioRepository.save(socio);
         registroRepository.save(registro);
 
-        return String.format("Livro '%s' devolvido com sucesso! Cópias restantes: %d",
-                livro.getNome(), livro.getCopiasDisponiveis());
+        return "Livro devolvido com sucesso";
     }
 
     @Transactional

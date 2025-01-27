@@ -13,6 +13,5 @@ import java.util.List;
 public interface RegistroRepository extends JpaRepository<Registro, Long> {
 
     List<Registro> findAllBySocioId(Long id);
-
-    Registro findBySocioId(Long id);
+    Registro findBySocioIdAndAtivoTrue(Long id);
 }
