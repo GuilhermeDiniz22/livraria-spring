@@ -5,8 +5,8 @@ Projeto feito com spring boot 3 com segurança e autenticação, docker e docume
 
 A api está configurada para entrar na pagina do swagger logo de início.
 
-Para gerar o banco de dados com a tabela é necessário criar um schema no MYSQL com o nome de vendas de acordo com o application.properties,
-com o user root e senha também root
+Para gerar o banco de dados com a tabela é necessário criar um schema no MYSQL com o nome de: vendas. De acordo com o application.properties,
+usando com o user root e senha também root.
 
 spring.datasource.url=jdbc:mysql://localhost:3306/vendas?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
 
