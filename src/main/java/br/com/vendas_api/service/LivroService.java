@@ -184,7 +184,8 @@ public class LivroService {
         socioRepository.save(socio);
         registroRepository.save(registro);
 
-        return "Livro devolvido com sucesso";
+        return String.format("Livro '%s' devolvido com sucesso! Cópias restantes: %d e Registro deletado com sucesso com id: %d",
+                livro.getNome(), livro.getCopiasDisponiveis(), registro.getId());
     }
 
     @Transactional
